@@ -1,6 +1,6 @@
 import React from "react";
-import {Button} from "react-bootstrap";
 import axiosInstance from "./axiosInstance";
+import Button from "react-bootstrap";
 
 export default class CreateButton extends React.Component {
     handleClick = () => {

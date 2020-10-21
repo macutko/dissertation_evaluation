@@ -1,0 +1,10 @@
+mongod --auth --port 27017 --replSet "rs0" --bind_ip localhost --dbpath C:\data\db
+mongo --port 27017 --authenticationDatabase "admin" -u "myUserAdmin" -p 
+
+rs.initiate( {
+   _id : "rs0",
+   members: [
+      { _id: 0, host: "192.168.0.35:27017" },
+      { _id: 1, host: "192.168.0.11:27017"}
+   ]
+})
