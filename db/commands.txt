@@ -1,5 +1,5 @@
-mongod --auth --port 27017 --replSet "rs0" --bind_ip localhost --dbpath C:\data\db
-mongo --port 27017 --authenticationDatabase "admin" -u "myUserAdmin" -p 
+mongod --auth --port 27017 --replSet "rs0" --bind_ip 192.168.0.35 --dbpath C:\data\db
+mongo --host 192.168.0.35 --port 27017 --authenticationDatabase "admin" -u "myUserAdmin" -p 
 
 rs.initiate( {
    _id : "rs0",
@@ -8,3 +8,12 @@ rs.initiate( {
       { _id: 1, host: "192.168.0.11:27017"}
    ]
 })
+
+db.addUser( { user: "admin", pwd: "123", roles: [ "userAdminAnyDatabase", "readWriteAnyDatabase", "dbAdminAnyDatabase", "clusterAdmin" ] } )
+db.createUser(
+  {
+    user: "admin",
+    pwd: passwordPrompt(), // or cleartext password
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "userAdminAnyDatabase", "readWriteAnyDatabase", "dbAdminAnyDatabase", "clusterAdmin" ]
+  }
+)
