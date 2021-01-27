@@ -2,10 +2,10 @@ import React from "react";
 import axiosInstance from "./axiosInstance";
 import {Button} from "react-bootstrap";
 
-export default class CreateButton extends React.Component {
+export default class UpdateButton extends React.Component {
     handleClick = () => {
         axiosInstance
-            .post("/create", {
+            .put("/update", {
                 GUID: this.props.GUID,
                 grade: this.props.grade
             })
@@ -21,7 +21,7 @@ export default class CreateButton extends React.Component {
         return (
             <div className={this.props.className}>
                 <Button onClick={this.handleClick}>
-                    Create
+                    Update
                 </Button>
             </div>
         )

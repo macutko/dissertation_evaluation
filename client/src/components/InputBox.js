@@ -9,12 +9,12 @@ export default class OutPut extends React.Component {
         return (
             <>
                 <InputGroup>
-                    <Input id={"title"} placeholder={"title"} className={'inputContainer'} onChange={this.props.input}
+                    <Input id={"GUID"} placeholder={"GUID"} className={'inputContainer'} onChange={this.props.input}
                            type="textarea"/>
                 </InputGroup>
 
                 <InputGroup>
-                    <Input id={"text"} placeholder={"text"} className={'inputContainer'} onChange={this.props.input}
+                    <Input id={"grade"} placeholder={"grade"} className={'inputContainer'} onChange={this.props.input}
                            type="textarea"/>
                 </InputGroup>
             </>

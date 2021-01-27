@@ -1,46 +1,53 @@
 import React from "react";
-import NavBarMenu from "../components/NavBarMenu";
 import OutPut from "../components/OutPut";
 import InputBox from "../components/InputBox";
 import {Container, Row} from "react-bootstrap";
 import CreateButton from "../components/CreateButton";
+import GetButton from "../components/GetButton";
+import DeleteButton from "../components/DeleteButton";
+import UpdateButton from "../components/UpdateButton";
 
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            outputText: "{  }",
-            title: "",
-            text: ""
+            response: 'response',
+            GUID: "",
+            grade: ""
         }
     }
 
     changeInput = (event) => {
-        console.log(event.target.value)
         this.setState({
-                [event.target.id]: event.target.value
-            },
-            () => console.log(this.state)
-        )
+            [event.target.id]: event.target.value
+        })
     }
     updateOutput = (text) => {
-        this.setState({outputText: JSON.stringify(text)})
+        this.setState({response: text})
     }
 
     render() {
         return (
             <div style={{backgroundColor: "#a20909", minHeight: '100vh'}}>
-                <NavBarMenu/>
+
                 <Container>
-                    <Row>
-                        <OutPut text={this.state.outputText}/>
-                    </Row>
+
                     <Row>
                         <InputBox input={this.changeInput}/>
                     </Row>
                     <Row style={{marginTop: "10px"}}>
-                        <CreateButton title={this.state.title} text={this.state.text} updateOutput={this.updateOutput}
+                        <CreateButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
                                       className={'col-sm'}/>
+                        <UpdateButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                                      className={'col-sm'}/>
+                        <GetButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                                   className={'col-sm'}/>
+                        <DeleteButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                                      className={'col-sm'}/>
+                    </Row>
+
+                    <Row>
+                        <OutPut text={this.state.response}/>
                     </Row>
                 </Container>
             </div>

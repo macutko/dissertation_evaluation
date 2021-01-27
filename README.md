@@ -13,6 +13,10 @@ Interacts with the Mongo and Geth DB.
 # Geth DB
 
 Creates a flask server and a DB based on Geth.
+```python
+
+pip install python-geth
+```
 
 # Mongo DB .txt
 
