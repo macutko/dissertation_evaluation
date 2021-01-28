@@ -8,17 +8,20 @@ module.exports = {
 };
 
 async function create(request) {
-    let time = 0;
+    let t0 = performance.now()
+
     if (!request.GUID) throw 'No GUID'
     if (!request.grade) throw 'No grade'
-    const dummy = new GUID(request);
+    const user = new GUID(request);
 
-    await dummy.save()
-    return {...dummy.toJSON(), time: time}
+    await user.save()
+    let t1 = performance.now()
+    return {...user.toJSON(), time: t1 - t0}
 }
 
 
 async function update(req) {
+    let t0 = performance.now()
     if (!req.GUID) throw 'No GUID'
     if (!req.grade) throw 'No grade'
 
@@ -29,21 +32,29 @@ async function update(req) {
 
     await user.save()
 
-
-    return user.toJSON()
+    let t1 = performance.now()
+    return {...user.toJSON(), time: t1 - t0}
 }
 
 async function get(req) {
+    let t0 = performance.now()
     if (req.GUID) {
-        return await GUID.find({GUID: req.GUID});
+        let u = await GUID.find({GUID: req.GUID});
+        let t1 = performance.now()
+        return {u, time: t1 - t0}
     } else if (req.grade) {
-        return await GUID.find({grade: req.grade})
+        let u = await GUID.find({grade: req.grade})
+        let t1 = performance.now()
+        return {u, time: t1 - t0}
     } else throw 'No params!'
 }
 
 
 async function remove(req) {
-    return GUID.findOneAndRemove({GUID: req.GUID});
+    let t0 = performance.now()
+    let u = await GUID.findOneAndRemove({GUID: req.GUID});
+    let t1 = performance.now()
+    return {u, time: t1 - t0}
 }
 
 
