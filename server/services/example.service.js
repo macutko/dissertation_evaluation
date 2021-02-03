@@ -1,5 +1,7 @@
 import {GUID} from '../models/db'
 
+const {performance} = require('perf_hooks');
+
 module.exports = {
     create,
     get,
@@ -11,7 +13,8 @@ async function create(request) {
     let t0 = performance.now()
 
     if (!request.GUID) throw 'No GUID'
-    if (!request.grade) throw 'No grade'
+    if (!request.grades) throw 'No grade'
+
     const user = new GUID(request);
 
     await user.save()
@@ -23,7 +26,7 @@ async function create(request) {
 async function update(req) {
     let t0 = performance.now()
     if (!req.GUID) throw 'No GUID'
-    if (!req.grade) throw 'No grade'
+    if (!req.grades) throw 'No grade'
 
     const user = await GUID.findOne({GUID: req.GUID});
     if (!user) throw 'User not found'

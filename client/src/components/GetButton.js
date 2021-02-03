@@ -9,6 +9,7 @@ export default class GetButton extends React.Component {
                 .get("/get", {
                     params: {
                         GUID: this.props.GUID,
+                        subject: this.props.subject,
                     }
                 })
                 .then((response) => {

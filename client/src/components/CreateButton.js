@@ -7,6 +7,7 @@ export default class CreateButton extends React.Component {
         axiosInstance
             .post("/create", {
                 GUID: this.props.GUID,
+                subject: this.props.subject,
                 grade: this.props.grade
             })
             .then((response) => {

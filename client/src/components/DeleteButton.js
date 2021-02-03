@@ -7,7 +7,8 @@ export default class DeleteButton extends React.Component {
         axiosInstance
             .delete("/delete", {
                 params: {
-                    GUID: this.props.GUID
+                    GUID: this.props.GUID,
+                    subject: this.props.subject,
                 }
             })
             .then((response) => {

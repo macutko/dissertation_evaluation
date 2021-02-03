@@ -2,7 +2,10 @@ import {model, Schema} from 'mongoose'
 
 const schema = new Schema({
     GUID: {type: Schema.Types.String, required: true},
-    grade: {type: Schema.Types.String, required: true},
+    grades: [{
+        subject: Schema.Types.String,
+        grade: Schema.Types.String,
+    }]
 });
 
 schema.set('toJSON', {

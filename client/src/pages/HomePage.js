@@ -13,6 +13,7 @@ export default class HomePage extends React.Component {
         this.state = {
             response: 'response',
             GUID: "",
+            subject: "",
             grade: ""
         }
     }
@@ -36,13 +37,17 @@ export default class HomePage extends React.Component {
                         <InputBox input={this.changeInput}/>
                     </Row>
                     <Row style={{marginTop: "10px"}}>
-                        <CreateButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                        <CreateButton GUID={this.state.GUID} grade={this.state.grade} subject={this.state.subject}
+                                      updateOutput={this.updateOutput}
                                       className={'col-sm'}/>
-                        <UpdateButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                        <UpdateButton GUID={this.state.GUID} grade={this.state.grade} subject={this.state.subject}
+                                      updateOutput={this.updateOutput}
                                       className={'col-sm'}/>
                         <GetButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                                   subject={this.state.subject}
                                    className={'col-sm'}/>
                         <DeleteButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
+                                      subject={this.state.subject}
                                       className={'col-sm'}/>
                     </Row>
 

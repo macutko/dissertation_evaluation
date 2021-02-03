@@ -14,6 +14,11 @@ export default class OutPut extends React.Component {
                 </InputGroup>
 
                 <InputGroup>
+                    <Input id={"subject"} placeholder={"subject"} className={'inputContainer'} onChange={this.props.input}
+                           type="textarea"/>
+                </InputGroup>
+
+                <InputGroup>
                     <Input id={"grade"} placeholder={"grade"} className={'inputContainer'} onChange={this.props.input}
                            type="textarea"/>
                 </InputGroup>

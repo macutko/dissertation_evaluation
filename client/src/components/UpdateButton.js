@@ -7,6 +7,7 @@ export default class UpdateButton extends React.Component {
         axiosInstance
             .put("/update", {
                 GUID: this.props.GUID,
+                subject: this.props.subject,
                 grade: this.props.grade
             })
             .then((response) => {
