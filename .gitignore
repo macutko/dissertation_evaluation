@@ -23,7 +23,8 @@ npm-debug.log
 */venv/*
 
 
-
+ db/__pycache__/*
+ db/__pycache__/**
 # Created by https://www.gitignore.io/api/react,gradle,android,reactnative
 # Edit at https://www.gitignore.io/?templates=react,gradle,android,reactnative
 
