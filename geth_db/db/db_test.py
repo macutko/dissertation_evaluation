@@ -1,5 +1,7 @@
 def getByGUID(GUID, db):
+    print('here')
     amount_of_subjects = db.functions.get_studentSubjectAmount(GUID).call()
+    print(amount_of_subjects)
     subjects = {}
     for i in range(amount_of_subjects):
         s = db.functions.get_studentSubject(GUID, i).call()

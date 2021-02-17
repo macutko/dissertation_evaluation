@@ -9,7 +9,6 @@ export default class GetButton extends React.Component {
                 .get("/get", {
                     params: {
                         GUID: this.props.GUID,
-                        subject: this.props.subject,
                     }
                 })
                 .then((response) => {
@@ -24,6 +23,19 @@ export default class GetButton extends React.Component {
                 .get("/get", {
                     params: {
                         grade: this.props.grade,
+                    }
+                })
+                .then((response) => {
+                    this.props.updateOutput(response)
+                })
+                .catch((error) => {
+                    this.props.updateOutput(error)
+                });
+        } else if (this.props.subject) {
+            axiosInstance
+                .get("/get", {
+                    params: {
+                        subject: this.props.subject,
                     }
                 })
                 .then((response) => {

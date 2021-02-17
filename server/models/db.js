@@ -13,5 +13,6 @@ mongoose.Promise = global.Promise;
 module.exports = {
 
     GUID: require('./guid.model'),
+    Subject: require('./subject.model'),
 
 };

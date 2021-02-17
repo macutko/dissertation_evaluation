@@ -23,6 +23,20 @@ export default class HomePage extends React.Component {
         })
     }
     updateOutput = (text) => {
+        if (text) {
+            if (text.data) {
+                if (text.data.blockNumber) {
+                    console.log(`From: ${text.data.from}`)
+                    console.log(`To: ${text.data.to}`)
+                    text.data = {
+                        block: text.data.blockNumber,
+                        gasUsed: text.data.gasUsed,
+                        time: text.data.time
+                    }
+                }
+            }
+        }
+        console.log(text.data)
         this.setState({response: text})
     }
 

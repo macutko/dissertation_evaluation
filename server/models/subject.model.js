@@ -1,8 +1,8 @@
 import {model, Schema} from 'mongoose'
 
 const schema = new Schema({
-    GUID: {type: Schema.Types.String, required: true, unique: true, dropDups: true},
-    subjects: [{type: Schema.Types.ObjectID, ref: 'Subject'}]
+    subjectName: {type: Schema.Types.String, required: true},
+    grade: {type: Schema.Types.String, required: true},
 });
 
 schema.set('toJSON', {
@@ -13,4 +13,4 @@ schema.set('toJSON', {
     }
 });
 
-module.exports = model('GUID', schema);
+module.exports = model('Subject', schema);
