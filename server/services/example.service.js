@@ -1,4 +1,4 @@
-import {GUID} from '../models/db'
+import {GUID, Subject} from '../models/db'
 
 const {performance} = require('perf_hooks');
 
@@ -13,25 +13,51 @@ async function create(request) {
     let t0 = performance.now()
 
     if (!request.GUID) throw 'No GUID'
-    if (!request.grades) throw 'No grade'
+    if (!request.subject) throw 'No subject'
+    if (!request.grade) throw 'No grade'
 
-    const user = new GUID(request);
+
+    let user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
+    if (user) throw 'User found'
+
+    const subject = new Subject({subjectName: request.subject, grade: request.grade})
+    await subject.save()
+
+    user = new GUID({GUID: request.GUID, subjects: [subject.id]});
 
     await user.save()
+
     let t1 = performance.now()
     return {...user.toJSON(), time: t1 - t0}
 }
 
 
-async function update(req) {
+async function update(request) {
     let t0 = performance.now()
-    if (!req.GUID) throw 'No GUID'
-    if (!req.grades) throw 'No grade'
+    if (!request.GUID) throw 'No GUID'
+    if (!request.subject) throw 'No subject'
+    if (!request.grade) throw 'No grade'
 
-    const user = await GUID.findOne({GUID: req.GUID});
+    const user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
     if (!user) throw 'User not found'
 
-    user.grade = req.grade
+    let found = false
+    for (const subject of user.subjects) {
+        if (subject.subjectName === request.subject) {
+            let sub = await Subject.findById(subject.id)
+            sub.grade = request.grade
+            await sub.save()
+            found = true
+            break
+        }
+    }
+
+    if (!found) {
+        let sub = new Subject({subjectName: request.subject, grade: request.grade})
+        sub.grade = request.grade
+        await sub.save()
+        user.subjects.push(sub.id)
+    }
 
     await user.save()
 
@@ -41,15 +67,10 @@ async function update(req) {
 
 async function get(req) {
     let t0 = performance.now()
-    if (req.GUID) {
-        let u = await GUID.find({GUID: req.GUID});
-        let t1 = performance.now()
-        return {u, time: t1 - t0}
-    } else if (req.grade) {
-        let u = await GUID.find({grade: req.grade})
-        let t1 = performance.now()
-        return {u, time: t1 - t0}
-    } else throw 'No params!'
+    if (!req.GUID) throw 'need guid'
+    let u = await GUID.find({GUID: req.GUID}).populate({path: 'subjects'});
+    let t1 = performance.now()
+    return {u, time: t1 - t0}
 }
 
 

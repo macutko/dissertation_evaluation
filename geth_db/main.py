@@ -1,10 +1,12 @@
 import json
 import os
+import time
 
 from flask import Flask, request
 from flask_cors import CORS
 from python_geth.contract_interface import ContractInterface
 from python_geth.node import Node
+from web3 import Web3
 
 from db.db_test import getByGUID, createOrUpdate
 
@@ -19,30 +21,56 @@ def hello():
 
 @app.route('/get', methods=['GET'])
 def get():
-    guid = request.get_json()['guid']
-    return json.dumps(getByGUID(guid, guid_db_contract), indent=4)
+    guid = request.args.get('GUID')
+    print(guid)
+    start_time = time.time()
+
+    node1.w3.geth.personal.unlock_account(account, password)
+
+    res = getByGUID(guid, guid_db_contract)
+    res = json.loads(Web3.toJSON(res))
+    print(res)
+    print(type(res))
+    res.update({'time': (time.time() - start_time)})
+    return json.dumps(res)
 
 
 @app.route('/create', methods=['POST'])
 def create():
-    guid = request.get_json()['guid']
+    guid = request.get_json()['GUID']
     subject = request.get_json()['subject']
     grade = request.get_json()['grade']
-    createOrUpdate(guid, subject, grade, guid_db_contract, CI)
-    return json.dumps({"tx": createOrUpdate(guid, subject, grade, guid_db_contract, CI)}, indent=4)
+    start_time = time.time()
+
+    node1.w3.geth.personal.unlock_account(account, password)
+
+    res = createOrUpdate(guid, subject, grade, guid_db_contract, CI)
+    res = json.loads(Web3.toJSON(res))
+    print(res)
+    print(type(res))
+    res.update({'time': (time.time() - start_time)})
+    return json.dumps(res)
 
 
 @app.route('/update', methods=['PUT'])
 def update():
-    guid = request.get_json()['guid']
+    guid = request.get_json()['GUID']
     subject = request.get_json()['subject']
     grade = request.get_json()['grade']
-    createOrUpdate(guid, subject, grade, guid_db_contract, CI)
-    return json.dumps({"tx": createOrUpdate(guid, subject, grade, guid_db_contract, CI)}, indent=4)
+    start_time = time.time()
+
+    node1.w3.geth.personal.unlock_account(account, password)
+
+    res = createOrUpdate(guid, subject, grade, guid_db_contract, CI)
+    res = json.loads(Web3.toJSON(res))
+    print(res)
+    print(type(res))
+    res.update({'time': (time.time() - start_time)})
+    return json.dumps(res)
 
 
 if __name__ == "__main__":
-    app.run(port=5002)
+
     datadir = "C:\\Users\\matus\\Desktop\\Uni\\lvl_5\\disseration\\bin\\node01"
     os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
 
@@ -61,3 +89,4 @@ if __name__ == "__main__":
                           ".sol")[0]
     except:
         node1.stop_node()
+    app.run(port=5002)
