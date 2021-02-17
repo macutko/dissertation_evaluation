@@ -4,7 +4,6 @@ import InputBox from "../components/InputBox";
 import {Container, Row} from "react-bootstrap";
 import CreateButton from "../components/CreateButton";
 import GetButton from "../components/GetButton";
-import DeleteButton from "../components/DeleteButton";
 import UpdateButton from "../components/UpdateButton";
 
 export default class HomePage extends React.Component {
@@ -46,9 +45,6 @@ export default class HomePage extends React.Component {
                         <GetButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
                                    subject={this.state.subject}
                                    className={'col-sm'}/>
-                        <DeleteButton GUID={this.state.GUID} grade={this.state.grade} updateOutput={this.updateOutput}
-                                      subject={this.state.subject}
-                                      className={'col-sm'}/>
                     </Row>
 
                     <Row>
