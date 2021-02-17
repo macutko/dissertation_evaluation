@@ -42,8 +42,7 @@ def update():
 
 
 if __name__ == "__main__":
-    app.run(port=5002)
-    datadir = "C:\\Users\\matus\\Desktop\\Uni\\lvl_5\\disseration\\bin\\node01"
+    datadir = "/home/matus/Desktop/node01"
     os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
 
     node1 = Node(datadir=datadir, port=30303,
@@ -57,7 +56,8 @@ if __name__ == "__main__":
                            datadir=datadir)
     try:
         guid_db_contract = CI.deploy_contract(
-            contract_file="C:\\Users\\matus\\Desktop\\Uni\\lvl_5\\disseration\\dissertation_evaluation\\geth_db\\db\\GUID_db"
+            contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
                           ".sol")[0]
     except:
         node1.stop_node()
+    app.run(port=5002)
