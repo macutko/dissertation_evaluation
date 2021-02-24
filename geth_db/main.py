@@ -61,55 +61,36 @@ def run_parent_node():
     node = Node(datadir=datadir, port=30303,
                 rpcport=8000, name="Node01")
     node.start_node()
-    node.w3.geth.miner.start(1)
+
     node.configure_truffle()
     account, password = node.get_first_account()
     node.w3.geth.personal.unlock_account(account, password)
-    CI = ContractInterface(w3=node.w3,
-                           datadir=datadir)
-    try:
-        guid_db_contract = CI.deploy_contract(
-            contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
-                          ".sol")[0]
-        return guid_db_contract, node, account, password
-    except:
-        node.stop_node()
-        return None, node, account, password
+    return node, account, password
 
 
 def run_child_node():
     node = Node(datadir=datadir, genesis_file="/home/matus/Desktop/Uni/genesis.json")
-    enode = "enode://8bf847cc041d60c6103f06b8dd3d3bebc48689699c8763cf3db7ba2ac26d4c08f7df4fa122caf168dfd51fd5089813d7ab181c1ff915c434256491ee01ea117e@192.168.0.73:30303?discport=0"
+    enode = "enode://f2c0ad6e407bfcfa8e93cba51c5de7aa14374845461b70c7ba76b4f91a7e14afc9293cbcaa79d16ba0db702fd44e9bfb8e002573dafda801534a69a4b357c348@192.168.0.73:30303?discport=0"
 
-    password = "3e12431c5eda9823afbfe5b1011aaa31c54ad4efe4ae68911fca2696a0a7ddf8"
+    password = "d6f0fc48d449c2f28bd9ffb6228a3cfc96cfae0bd98a0c5d4bc11875978ff398"
 
     # Start node
     node.start_node()
     node.w3.geth.admin.add_peer(enode)
-    # add parent node
-    node.add_foreign_account(name="UTC--2021-02-19T11-15-19.419344900Z--953df1654446f34626b734d6e6ce5a0ba49309bd",
-                             key="/home/matus/Desktop/Uni/UTC--2021-02-19T11-15-19.419344900Z--953df1654446f34626b734d6e6ce5a0ba49309bd")
+    node.add_foreign_account(name="UTC--2021-02-24T05-21-26.252696300Z--cf7c9836521259c9ed75b35d53c199581219b0f3",
+                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T05-21-26.252696300Z--cf7c9836521259c9ed75b35d53c199581219b0f3")
 
-    # need a dummy contract to start syncing
+    # need a dummy account to start syncing
     account = node.w3.geth.personal.new_account(password)
     node.w3.geth.personal.unlock_account(account, password)
 
     print("PEER COUNT: {}".format(node.w3.net.peerCount))
-    node.w3.geth.miner.start(1)
 
-    account = "0x953dF1654446f34626b734d6e6CE5a0Ba49309bd"
+    account = "0xCF7C9836521259c9eD75B35d53c199581219B0f3"
     r = node.w3.geth.personal.unlock_account(account, password)
     print("UNLOCK ACCOUNT: {}".format(r))
 
-    CI = ContractInterface(w3=node.w3,
-                           datadir=datadir)
-
-    guid_db_contract = CI.get_contract_from_source(source="/home/matus/Desktop/Uni/GUID_mapping.json")
-    return guid_db_contract, node, account, password
-
-
-# guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
-# return guid_db_contract, node, account, password
+    return node, account, password
 
 
 if __name__ == "__main__":
@@ -118,11 +99,41 @@ if __name__ == "__main__":
     os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
 
     if num == "1":
-        guid_db_contract, node, account, password = run_parent_node()
+        node, account, password = run_parent_node()
     else:
-        guid_db_contract, node, account, password = run_child_node()
-    print("Address:" + guid_db_contract.address)
-    print(node.w3.eth.getCode(guid_db_contract.address))
+        node, account, password = run_child_node()
+
+    num = input("Can I start the miner?")
+    if num == "1":
+        print("starting")
+        node.w3.geth.miner.start(1)
+    else:
+        exit(0)
+
+    num = input("Can I deploy the contract?")
+
+    guid_db_contract = None
+    CI = ContractInterface(w3=node.w3,
+                           datadir=datadir)
+    if num == "1":
+        print("deploying")
+        try:
+            guid_db_contract = CI.deploy_contract(
+                contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
+                              ".sol")[0]
+        except:
+            node.stop_node()
+    else:
+        contract_addr = input("Is the contract deployed? gimme his address!")
+        guid_db_contract = CI.get_contract_from_source(source="/home/matus/Desktop/Uni/GUID_mapping.json")
+        guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
+        guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
+        guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
+
+    if guid_db_contract is not None:
+        print("Address:" + guid_db_contract.address)
+        print(node.w3.eth.getCode(guid_db_contract.address))
+
     # print(guid_db_contract.functions.get_studentSubjectAmount("2265072g").call(
     #     {"from": node.w3.toChecksumAddress(account)}))
     app.run(port=5002)
