@@ -62,7 +62,6 @@ def run_parent_node():
                 rpcport=8000, name="Node01")
     node.start_node()
 
-
     account, password = node.get_first_account()
     node.w3.geth.personal.unlock_account(account, password)
     return node, account, password
@@ -70,15 +69,15 @@ def run_parent_node():
 
 def run_child_node():
     node = Node(datadir=datadir, genesis_file="/home/matus/Desktop/Uni/genesis.json")
-    enode = "enode://8b117fff23a7a7b30e49a7d8cbfad5e679028b3dd59de52c4ba5318dadcfbee40f1655a4c5862952b25e2237acc4da492d34cb5976b833d4b0efaf50afae0395@192.168.0.73:30303?discport=0"
+    enode = "enode://76a12d679a699b0a7d13547d8dfea80a5b0deb162b4d05611f3a074aceeca439687d76da8458ede6cd22c407f31ff6fd4791e069c60818041ad4f6432cd62228@192.168.0.73:30303?discport=0"
 
-    password = "aeb5e03adaf8445dcd143c4b1f690403b36d7d8c3ac20f593340b0ac7fb96109"
+    password = "0a9730c09dc2886c1a59da5c1ef58748d7497703559283134a771f6337635047"
 
     # Start node
     node.start_node()
     node.w3.geth.admin.add_peer(enode)
-    node.add_foreign_account(name="UTC--2021-02-24T06-26-10.258253600Z--f03c4a7f7dd7f2edbc1c8773ecc16cbedca96d85",
-                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T06-26-10.258253600Z--f03c4a7f7dd7f2edbc1c8773ecc16cbedca96d85")
+    node.add_foreign_account(name="UTC--2021-02-24T07-02-49.041752700Z--e8cc113e71fd3ea105566195e1699dca00c3a7a7",
+                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T07-02-49.041752700Z--e8cc113e71fd3ea105566195e1699dca00c3a7a7")
 
     # need a dummy account to start syncing
     account = node.w3.geth.personal.new_account(password)
@@ -86,7 +85,7 @@ def run_child_node():
 
     print("PEER COUNT: {}".format(node.w3.net.peerCount))
 
-    account = "0xF03c4A7f7dD7F2eDbc1c8773ECC16CBeDCa96d85"
+    account = "0xE8cc113E71Fd3eA105566195E1699DcA00c3a7A7"
     r = node.w3.geth.personal.unlock_account(account, password)
     print("UNLOCK ACCOUNT: {}".format(r))
 
@@ -119,6 +118,14 @@ if __name__ == "__main__":
             guid_db_contract = CI.deploy_contract(
                 contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
                               ".sol")[0]
+
+            print("calling get")
+            guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
+            print("calling add")
+            guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
+            print("calling get")
+            guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
+
         except Exception as e:
             print(e)
             node.stop_node()
