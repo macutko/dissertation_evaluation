@@ -9,7 +9,7 @@ def getByGUID(GUID, db):
 
 
 def createOrUpdate(GUID, subject, grade, db, w3):
-    tx_hash = db.functions.add_grade(GUID, subject, grade).call()
+    tx_hash = db.functions.add_grade(GUID, subject, grade).transact()
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
     return tx_receipt
