@@ -83,14 +83,17 @@ if __name__ == "__main__":
 
     if num == "2" or num == '3':
         print("deploying")
+        if os.name == 'nt':
+            contract_file = "C:\\Users\\matus\\Desktop\\Uni\\dissertation_evaluation\\geth_db\\db\\GUID_db.sol"
+        else:
+            contract_file = "/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
+
         try:
-            guid_db_contract = CI.deploy_contract(
-                contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
-                              ".sol")[0]
+            guid_db_contract = CI.deploy_contract(contract_file=contract_file)[0]
         except Exception as e:
             print(e)
             node.stop_node()
     else:
         input("Enter to map contract")
         guid_db_contract = CI.get_contract_from_source(source="C:\\Users\\matus\\Desktop\\Uni\\GUID_mapping.json")
-    app.run(port=5002)
+    app.run(host='0.0.0.0', port=5002)

@@ -1,3 +1,6 @@
+mongod --bind_ip 192.168.0.73 --dbpath C:\data\db
+
+
 mongod --auth --port 27017 --replSet "rs0" --bind_ip 192.168.0.35 --dbpath C:\data\db
 mongo --host 192.168.0.35 --port 27017 --authenticationDatabase "admin" -u "myUserAdmin" -p 
 
