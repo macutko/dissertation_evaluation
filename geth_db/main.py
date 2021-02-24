@@ -112,7 +112,7 @@ if __name__ == "__main__":
     CI = ContractInterface(w3=node.w3,
                            datadir=datadir)
 
-    app.run(port=5002)
+
     if num == "2":
         print("deploying")
         try:
@@ -132,3 +132,4 @@ if __name__ == "__main__":
         guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
         print("calling get")
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
+    app.run(port=5002)
