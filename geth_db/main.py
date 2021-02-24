@@ -62,7 +62,7 @@ def run_parent_node():
                 rpcport=8000, name="Node01")
     node.start_node()
 
-    node.configure_truffle()
+
     account, password = node.get_first_account()
     node.w3.geth.personal.unlock_account(account, password)
     return node, account, password
@@ -70,15 +70,15 @@ def run_parent_node():
 
 def run_child_node():
     node = Node(datadir=datadir, genesis_file="/home/matus/Desktop/Uni/genesis.json")
-    enode = "enode://aee4b611831031f837bbf059e770fcaa10e3823ecded04e6c5faada5d64ba4fd3009eface6e7b6ea475e0e186bd6798e66da5e18dcc2d75956eb3abbf5820ae8@192.168.0.73:30303?discport=0"
+    enode = "enode://8b117fff23a7a7b30e49a7d8cbfad5e679028b3dd59de52c4ba5318dadcfbee40f1655a4c5862952b25e2237acc4da492d34cb5976b833d4b0efaf50afae0395@192.168.0.73:30303?discport=0"
 
-    password = "d1c8e5d790703ffeee04ea173bc58ca2761aa2832a4b41dea3a9d6fe07e3c30c"
+    password = "aeb5e03adaf8445dcd143c4b1f690403b36d7d8c3ac20f593340b0ac7fb96109"
 
     # Start node
     node.start_node()
     node.w3.geth.admin.add_peer(enode)
-    node.add_foreign_account(name="UTC--2021-02-24T06-01-26.904529800Z--146a331246f3fbd67f644d419b3582606625f777",
-                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T06-01-26.904529800Z--146a331246f3fbd67f644d419b3582606625f777")
+    node.add_foreign_account(name="UTC--2021-02-24T06-26-10.258253600Z--f03c4a7f7dd7f2edbc1c8773ecc16cbedca96d85",
+                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T06-26-10.258253600Z--f03c4a7f7dd7f2edbc1c8773ecc16cbedca96d85")
 
     # need a dummy account to start syncing
     account = node.w3.geth.personal.new_account(password)
@@ -86,7 +86,7 @@ def run_child_node():
 
     print("PEER COUNT: {}".format(node.w3.net.peerCount))
 
-    account = "0x146a331246f3fBD67F644d419B3582606625F777"
+    account = "0xF03c4A7f7dD7F2eDbc1c8773ECC16CBeDCa96d85"
     r = node.w3.geth.personal.unlock_account(account, password)
     print("UNLOCK ACCOUNT: {}".format(r))
 
@@ -95,33 +95,40 @@ def run_child_node():
 
 if __name__ == "__main__":
     num = input("Is this the 1 node or 2 node?")
-    datadir = "C:\\Users\\matus\\Desktop\\Uni\\node01"
-    os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
 
     if num == "1":
         node, account, password = run_parent_node()
+        datadir = "C:\\Users\\matus\\Desktop\\Uni\\node01"
+        os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
     else:
+        datadir = "/home/matus/Desktop/node01"
+        os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
         node, account, password = run_child_node()
-
+    node.configure_truffle()
     input("To start mining hit enter")
     node.w3.geth.miner.start(1)
 
     guid_db_contract = None
     CI = ContractInterface(w3=node.w3,
                            datadir=datadir)
+
+    app.run(port=5002)
     if num == "2":
         print("deploying")
         try:
             guid_db_contract = CI.deploy_contract(
                 contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
                               ".sol")[0]
-        except:
+        except Exception as e:
+            print(e)
             node.stop_node()
     else:
         input("Enter to map contract")
         guid_db_contract = CI.get_contract_from_source(source="C:\\Users\\matus\\Desktop\\Uni\\GUID_mapping.json")
+        print(guid_db_contract.functions)
+        print("calling get")
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
+        print("calling add")
         guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
+        print("calling get")
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
-
-    app.run(port=5002)
