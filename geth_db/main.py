@@ -96,9 +96,9 @@ if __name__ == "__main__":
     num = input("Is this the 1 node or 2 node?")
 
     if num == "1":
-        node, account, password = run_parent_node()
-        datadir = "/home/matus/Desktop/node01"
+        datadir = "C:\\Users\\matus\\Desktop\\Uni\\node01"
         os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
+        node, account, password = run_parent_node()
     else:
         datadir = "/home/matus/Desktop/node01"
         os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
@@ -129,8 +129,9 @@ if __name__ == "__main__":
             print(e)
             node.stop_node()
     else:
-        path = input("Please give me the path to contract")
-        guid_db_contract = CI.get_contract_from_source(source=path)
+        input("Enter to map contract")
+        guid_db_contract = CI.get_contract_from_source(source="C:\\Users\\matus\\Desktop\\Uni\\GUID_mapping.json")
+        print(guid_db_contract.functions)
         print("calling get")
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
         print("calling add")
