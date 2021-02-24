@@ -97,9 +97,9 @@ if __name__ == "__main__":
     num = input("Is this the 1 node or 2 node?")
 
     if num == "1":
-        node, account, password = run_parent_node()
         datadir = "C:\\Users\\matus\\Desktop\\Uni\\node01"
         os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
+        node, account, password = run_parent_node()
     else:
         datadir = "/home/matus/Desktop/node01"
         os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
