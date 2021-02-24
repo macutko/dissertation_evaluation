@@ -95,7 +95,7 @@ def run_child_node():
 
 if __name__ == "__main__":
     num = input("Is this the 1 node or 2 node?")
-    datadir = "/home/matus/Desktop/node01"
+    datadir = "C:\\Users\\matus\\Desktop\\Uni\\node01"
     os.system("rm -rf \"{}\"".format(datadir))  # debug purposes
 
     if num == "1":
@@ -118,8 +118,8 @@ if __name__ == "__main__":
         except:
             node.stop_node()
     else:
-        path = input("Please give me the path to contract")
-        guid_db_contract = CI.get_contract_from_source(source=path)
+        input("Enter to map contract")
+        guid_db_contract = CI.get_contract_from_source(source="C:\\Users\\matus\\Desktop\\Uni\\GUID_mapping.json")
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
         guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
