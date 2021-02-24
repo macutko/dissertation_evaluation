@@ -69,25 +69,19 @@ def run_parent_node():
 
 def run_child_node():
     node = Node(datadir=datadir, genesis_file="/home/matus/Desktop/Uni/genesis.json")
-    enode = "enode://76a12d679a699b0a7d13547d8dfea80a5b0deb162b4d05611f3a074aceeca439687d76da8458ede6cd22c407f31ff6fd4791e069c60818041ad4f6432cd62228@192.168.0.73:30303?discport=0"
-
-    password = "0a9730c09dc2886c1a59da5c1ef58748d7497703559283134a771f6337635047"
+    enode = "enode://a0b3e17e95f377525b41009208fa32b2e45b5bfe6b20028ea7f027038ebc24abe3edf31924d079232a986fa22f63ae76b6ac58970da59aba014cda5044dc6644@192.168.0.73:30303?discport=0"
 
     # Start node
     node.start_node()
     node.w3.geth.admin.add_peer(enode)
-    node.add_foreign_account(name="UTC--2021-02-24T07-02-49.041752700Z--e8cc113e71fd3ea105566195e1699dca00c3a7a7",
-                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T07-02-49.041752700Z--e8cc113e71fd3ea105566195e1699dca00c3a7a7")
+    node.add_foreign_account(name="UTC--2021-02-24T07-12-41.183318900Z--41fb9a736bf45288b6cef59d3863f1e836954aaf",
+                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T07-12-41.183318900Z--41fb9a736bf45288b6cef59d3863f1e836954aaf")
 
-    # need a dummy account to start syncing
-    account = node.w3.geth.personal.new_account(password)
-    node.w3.geth.personal.unlock_account(account, password)
-
-    print("PEER COUNT: {}".format(node.w3.net.peerCount))
-
-    account = "0xE8cc113E71Fd3eA105566195E1699DcA00c3a7A7"
+    password = "6798e3fca05bc61d0c74a3186bd90f2d75586c65cfe99f8fc678cbb1f22a4567"
+    account = "0x41fb9a736bf45288B6Cef59d3863F1e836954AAF"
     r = node.w3.geth.personal.unlock_account(account, password)
     print("UNLOCK ACCOUNT: {}".format(r))
+    print("PEER COUNT: {}".format(node.w3.net.peerCount))
 
     return node, account, password
 
@@ -117,25 +111,10 @@ if __name__ == "__main__":
             guid_db_contract = CI.deploy_contract(
                 contract_file="/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
                               ".sol")[0]
-
-            print("calling get")
-            guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
-            print("calling add")
-            guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
-            print("calling get")
-            guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
-
         except Exception as e:
             print(e)
             node.stop_node()
     else:
         input("Enter to map contract")
         guid_db_contract = CI.get_contract_from_source(source="C:\\Users\\matus\\Desktop\\Uni\\GUID_mapping.json")
-        print(guid_db_contract.functions)
-        print("calling get")
-        guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
-        print("calling add")
-        guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
-        print("calling get")
-        guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
     app.run(port=5002)

@@ -44,12 +44,12 @@ def simple_geth():
         print("ROUND GETH: {}".format(i + 1))
         data = {"GUID": "2265{}72g".format(random.randint(0, 1000)), "subject": "PSI", "grade": "A3"}
 
-        # r = json.loads(simple_create(URL, data).text)
-        # print("\t Create: {} s".format(r['time']))
+        r = json.loads(simple_create(URL, data).text)
+        print("\t Create: {} s".format(r['time']))
 
-        # data['grade'] = "A1"
-        # r = json.loads(simple_update(URL, data).text)
-        # print("\t Update: {} s".format(r['time']))
+        data['grade'] = "A1"
+        r = json.loads(simple_update(URL, data).text)
+        print("\t Update: {} s".format(r['time']))
 
         r = json.loads(simple_get(URL, data).text)
         print("\t Get: {} s".format(r['time']))
