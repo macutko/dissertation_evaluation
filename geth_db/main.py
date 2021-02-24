@@ -70,15 +70,15 @@ def run_parent_node():
 
 def run_child_node():
     node = Node(datadir=datadir, genesis_file="/home/matus/Desktop/Uni/genesis.json")
-    enode = "enode://f2c0ad6e407bfcfa8e93cba51c5de7aa14374845461b70c7ba76b4f91a7e14afc9293cbcaa79d16ba0db702fd44e9bfb8e002573dafda801534a69a4b357c348@192.168.0.73:30303?discport=0"
+    enode = "enode://aee4b611831031f837bbf059e770fcaa10e3823ecded04e6c5faada5d64ba4fd3009eface6e7b6ea475e0e186bd6798e66da5e18dcc2d75956eb3abbf5820ae8@192.168.0.73:30303?discport=0"
 
-    password = "d6f0fc48d449c2f28bd9ffb6228a3cfc96cfae0bd98a0c5d4bc11875978ff398"
+    password = "d1c8e5d790703ffeee04ea173bc58ca2761aa2832a4b41dea3a9d6fe07e3c30c"
 
     # Start node
     node.start_node()
     node.w3.geth.admin.add_peer(enode)
-    node.add_foreign_account(name="UTC--2021-02-24T05-21-26.252696300Z--cf7c9836521259c9ed75b35d53c199581219b0f3",
-                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T05-21-26.252696300Z--cf7c9836521259c9ed75b35d53c199581219b0f3")
+    node.add_foreign_account(name="UTC--2021-02-24T06-01-26.904529800Z--146a331246f3fbd67f644d419b3582606625f777",
+                             key="/home/matus/Desktop/Uni/UTC--2021-02-24T06-01-26.904529800Z--146a331246f3fbd67f644d419b3582606625f777")
 
     # need a dummy account to start syncing
     account = node.w3.geth.personal.new_account(password)
@@ -86,7 +86,7 @@ def run_child_node():
 
     print("PEER COUNT: {}".format(node.w3.net.peerCount))
 
-    account = "0xCF7C9836521259c9eD75B35d53c199581219B0f3"
+    account = "0x146a331246f3fBD67F644d419B3582606625F777"
     r = node.w3.geth.personal.unlock_account(account, password)
     print("UNLOCK ACCOUNT: {}".format(r))
 
@@ -103,19 +103,13 @@ if __name__ == "__main__":
     else:
         node, account, password = run_child_node()
 
-    num = input("Can I start the miner?")
-    if num == "1":
-        print("starting")
-        node.w3.geth.miner.start(1)
-    else:
-        exit(0)
-
-    num = input("Can I deploy the contract?")
+    input("To start mining hit enter")
+    node.w3.geth.miner.start(1)
 
     guid_db_contract = None
     CI = ContractInterface(w3=node.w3,
                            datadir=datadir)
-    if num == "1":
+    if num == "2":
         print("deploying")
         try:
             guid_db_contract = CI.deploy_contract(
@@ -124,16 +118,10 @@ if __name__ == "__main__":
         except:
             node.stop_node()
     else:
-        contract_addr = input("Is the contract deployed? gimme his address!")
-        guid_db_contract = CI.get_contract_from_source(source="/home/matus/Desktop/Uni/GUID_mapping.json")
+        path = input("Please give me the path to contract")
+        guid_db_contract = CI.get_contract_from_source(source=path)
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
         guid_db_contract.functions.add_grade("2265072g", "PSI", "A1").call()
         guid_db_contract.functions.get_studentSubjectAmount("2265072g").call()
 
-    if guid_db_contract is not None:
-        print("Address:" + guid_db_contract.address)
-        print(node.w3.eth.getCode(guid_db_contract.address))
-
-    # print(guid_db_contract.functions.get_studentSubjectAmount("2265072g").call(
-    #     {"from": node.w3.toChecksumAddress(account)}))
     app.run(port=5002)
