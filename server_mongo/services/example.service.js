@@ -10,13 +10,13 @@ module.exports = {
 };
 
 async function create(request) {
-    let t0 = performance.now()
+
 
     if (!request.GUID) throw 'No GUID'
     if (!request.subject) throw 'No subject'
     if (!request.grade) throw 'No grade'
 
-
+    let t0 = performance.now()
     let user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
     if (user) return {user: null, time: t1 - t0}
 
@@ -33,11 +33,11 @@ async function create(request) {
 
 
 async function update(request) {
-    let t0 = performance.now()
+    
     if (!request.GUID) throw 'No GUID'
     if (!request.subject) throw 'No subject'
     if (!request.grade) throw 'No grade'
-
+    let t0 = performance.now()
     const user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
     if (!user) throw 'User not found'
 
@@ -66,9 +66,9 @@ async function update(request) {
 }
 
 async function get(req) {
-    let t0 = performance.now()
     console.log(req)
     if (!req.GUID) throw 'need guid'
+    let t0 = performance.now()
     let u = await GUID.find({GUID: req.GUID}).populate({path: 'subjects'});
     let t1 = performance.now()
     return {u, time: t1 - t0}
