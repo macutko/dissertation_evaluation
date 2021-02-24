@@ -34,12 +34,13 @@ def create():
     grade = request.get_json()['grade']
     start_time = time.time()
 
-    node.w3.geth.personal.unlock_account(account, password)
+    print('ACCOUTN UNLOK: {}'.format(node.w3.geth.personal.unlock_account(account, password)))
+    print(account)
+    print(password)
 
-    res = createOrUpdate(guid, subject, grade, guid_db_contract, node.w3)
+    res = createOrUpdate(guid, subject, grade, guid_db_contract, node.w3, account)
     res = json.loads(Web3.toJSON(res))
-    res.update({'time': (time.time() - start_time)})
-    return json.dumps(res)
+    return json.dumps({'tx': res, 'time': (time.time() - start_time)})
 
 
 @app.route('/update', methods=['PUT'])
@@ -51,10 +52,9 @@ def update():
 
     node.w3.geth.personal.unlock_account(account, password)
 
-    res = createOrUpdate(guid, subject, grade, guid_db_contract, node.w3)
+    res = createOrUpdate(guid, subject, grade, guid_db_contract, node.w3, account)
     res = json.loads(Web3.toJSON(res))
-    res.update({'time': (time.time() - start_time)})
-    return json.dumps(res)
+    return json.dumps({'tx': res, 'time': (time.time() - start_time)})
 
 
 def run_parent_node():
@@ -110,7 +110,6 @@ if __name__ == "__main__":
     guid_db_contract = None
     CI = ContractInterface(w3=node.w3,
                            datadir=datadir)
-
 
     if num == "2":
         print("deploying")
