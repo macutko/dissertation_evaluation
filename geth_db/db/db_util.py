@@ -8,8 +8,8 @@ def getByGUID(GUID, db):
     return subjects
 
 
-def createOrUpdate(GUID, subject, grade, db, w3):
-    tx_hash = db.functions.add_grade(GUID, subject, grade).transact()
+def createOrUpdate(GUID, subject, grade, db, w3,account):
+    tx_hash = db.functions.add_grade(GUID, subject, grade).transact({'from':account})
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
 
     return tx_receipt
