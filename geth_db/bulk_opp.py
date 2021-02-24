@@ -46,13 +46,11 @@ def simple_geth():
 
         r = json.loads(simple_create(URL, data).text)
         print("\t Create: {} s".format(r['time']))
-        print(r)
         data['grade'] = "A1"
         r = json.loads(simple_update(URL, data).text)
         print("\t Update: {} s".format(r['time']))
 
         r = json.loads(simple_get(URL, data).text)
-        print(r)
         print("\t Get: {} s".format(r['time']))
         print()
 
@@ -105,8 +103,8 @@ def bulk_get_100(URL, name):
 if __name__ == '__main__':
     # bulk_create_100("http://localhost:5002/", "Geth (s)")
     # bulk_get_100("http://localhost:5002/", "Geth (s)")
-    simple_geth()
+    # simple_geth()
 
-    # bulk_create_100("http://localhost:12346/", "Mongo (ms)")
-    # bulk_get_100("http://localhost:12346/", "Mongo (ms)")
-    # simple_mongo()
+    bulk_create_100("http://localhost:12346/", "Mongo (ms)")
+    bulk_get_100("http://localhost:12346/", "Mongo (ms)")
+    simple_mongo()
