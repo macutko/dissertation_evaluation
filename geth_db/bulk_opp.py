@@ -1,7 +1,6 @@
 import csv
 import json
 import random
-import time
 
 import requests
 
@@ -40,7 +39,7 @@ def simple_mongo():
 
 
 def simple_geth():
-    URL = "http://localhost:5002/"
+    URL = "http://192.168.0.73:5002/"
     for i in range(3):
         print("ROUND GETH: {}".format(i + 1))
         data = {"GUID": "2265{}72g".format(random.randint(0, 1000)), "subject": "PSI", "grade": "A3"}
@@ -103,10 +102,10 @@ def bulk_get_100(URL, name):
 
 
 if __name__ == '__main__':
-    bulk_create_100("http://localhost:5002/", "Geth (s)")
-    bulk_get_100("http://localhost:5002/", "Geth (s)")
+    # bulk_create_100("http://localhost:5002/", "Geth (s)")
+    # bulk_get_100("http://localhost:5002/", "Geth (s)")
     simple_geth()
 
-    bulk_create_100("http://localhost:12346/", "Mongo (ms)")
-    bulk_get_100("http://localhost:12346/", "Mongo (ms)")
-    simple_mongo()
+    # bulk_create_100("http://localhost:12346/", "Mongo (ms)")
+    # bulk_get_100("http://localhost:12346/", "Mongo (ms)")
+    # simple_mongo()
