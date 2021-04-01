@@ -9,9 +9,11 @@ import {config} from './config/config.js'
 
 const app = express();
 
-
+//to decode the body of the request
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+//for clients to work
 app.use(cors());
 
 

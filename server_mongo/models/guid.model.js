@@ -1,5 +1,6 @@
 import {model, Schema} from 'mongoose'
 
+// DB model for the GUID record with grades
 const schema = new Schema({
     GUID: {type: Schema.Types.String, required: true, unique: true, dropDups: true},
     subjects: [{type: Schema.Types.ObjectID, ref: 'Subject'}]

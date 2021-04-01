@@ -86,7 +86,7 @@ if __name__ == "__main__":
         if os.name == 'nt':
             contract_file = "C:\\Users\\matus\\Desktop\\Uni\\dissertation_evaluation\\geth_db\\db\\GUID_db.sol"
         else:
-            contract_file = "/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db"
+            contract_file = "/home/matus/Desktop/Uni/dissertation_evaluation/geth_db/db/GUID_db.sol"
 
         try:
             guid_db_contract = CI.deploy_contract(contract_file=contract_file)[0]

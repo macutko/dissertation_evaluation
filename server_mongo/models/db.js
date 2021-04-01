@@ -7,6 +7,8 @@ const connectionOptions = {
     useUnifiedTopology: true,
     useFindAndModify: false
 };
+
+// connect to MongoDB instance
 mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionOptions);
 mongoose.Promise = global.Promise;
 

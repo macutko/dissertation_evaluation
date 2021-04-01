@@ -2,7 +2,7 @@ import csv
 import json
 import random
 import time
-
+import pandas as pd
 import requests
 
 
@@ -65,6 +65,7 @@ def bulk_create_100(URL, name):
         mydict = {rows[0]: rows[1] for rows in reader}
     total_time = 0.0
     counter = 0
+    results = {}
     for key, value in mydict.items():
         v = value.strip('[]\'')
         v = v.split(', ')
@@ -75,10 +76,12 @@ def bulk_create_100(URL, name):
             exit(0)
         else:
             r = json.loads(r.text)
+            results['iteration {}'.format(counter)] = r['time']
             total_time = total_time + float(r['time'])
         counter += 1
         print("Item {}/{}".format(counter, len(mydict.items())))
     print("BULK CREATE 100 {0}: {1}".format(name, total_time))
+    return results
 
 
 def bulk_get_100(URL, name):
@@ -87,6 +90,7 @@ def bulk_get_100(URL, name):
         mydict = {rows[0]: rows[1] for rows in reader}
     total_time = 0.0
     counter = 0
+    results = {}
     for key, value in mydict.items():
         v = value.strip('[]\'')
         v = v.split(', ')
@@ -97,19 +101,29 @@ def bulk_get_100(URL, name):
             exit(0)
         else:
             r = json.loads(r.text)
+            results['iteration {}'.format(counter)] = r['time']
             total_time = total_time + float(r['time'])
         counter += 1
         print("Item {}/{}".format(counter, len(mydict.items())))
 
     print("BULK GET 100 {0}: {1}".format(name, total_time))
+    return results
 
 
 if __name__ == '__main__':
     URL = "http://192.168.0.73:5002/"
-    bulk_create_100(URL, "Geth (s)")
-    bulk_get_100(URL, "Geth (s)")
+
+    r = bulk_create_100(URL, "Geth (s)")
+    pd.DataFrame(r, index=[0]).to_csv('results_create_100_geth')
+
+    r = bulk_get_100(URL, "Geth (s)")
+    pd.DataFrame(r, index=[0]).to_csv('results_get_100_geth')
     simple_geth()
 
-    # bulk_create_100("http://localhost:12346/", "Mongo (ms)")
-    # bulk_get_100("http://localhost:12346/", "Mongo (ms)")
+    #
+    # r = bulk_create_100("http://localhost:12346/", "Mongo (ms)")
+    # pd.DataFrame(r, index=[0]).to_csv('results_create_100_mongo')
+    #
+    # r = bulk_get_100("http://localhost:12346/", "Mongo (ms)")
+    # pd.DataFrame(r, index=[0]).to_csv('results_get_100_mongo')
     # simple_mongo()
