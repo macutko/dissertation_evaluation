@@ -17,8 +17,11 @@ CORS(app)
 @app.route('/get', methods=['GET'])
 def get():
     guid = request.args.get('GUID')
+
+    # time it
     start_time = time.time()
 
+    #  need to make sure the account is unlocked for the request to go through
     node.w3.geth.personal.unlock_account(account, password)
 
     res = get_by_guid(guid, guid_db_contract)
@@ -50,6 +53,7 @@ def update():
     grade = request.get_json()['grade']
     start_time = time.time()
 
+    #  need to make sure the account is unlocked for the request to go through
     node.w3.geth.personal.unlock_account(account, password)
 
     res = create_or_update(guid, subject, grade, guid_db_contract, node.w3, account)

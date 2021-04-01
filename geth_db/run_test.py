@@ -5,6 +5,11 @@ import time
 import pandas as pd
 import requests
 
+"""
+Simple script to run evaluation automatically making requests to the appropriate backend and providing the times
+required to execute.
+"""
+
 
 def simple_get(URL, data):
     return requests.get(url=URL + "get",
@@ -111,6 +116,7 @@ def bulk_get_100(URL, name):
 
 
 if __name__ == '__main__':
+    # URL for bulk GETH
     URL = "http://192.168.0.73:5002/"
 
     r = bulk_create_100(URL, "Geth (s)")
@@ -120,10 +126,9 @@ if __name__ == '__main__':
     pd.DataFrame(r, index=[0]).to_csv('results_get_100_geth')
     simple_geth()
 
-    #
-    # r = bulk_create_100("http://localhost:12346/", "Mongo (ms)")
-    # pd.DataFrame(r, index=[0]).to_csv('results_create_100_mongo')
-    #
-    # r = bulk_get_100("http://localhost:12346/", "Mongo (ms)")
-    # pd.DataFrame(r, index=[0]).to_csv('results_get_100_mongo')
-    # simple_mongo()
+    r = bulk_create_100("http://localhost:12346/", "Mongo (ms)")
+    pd.DataFrame(r, index=[0]).to_csv('results_create_100_mongo')
+
+    r = bulk_get_100("http://localhost:12346/", "Mongo (ms)")
+    pd.DataFrame(r, index=[0]).to_csv('results_get_100_mongo')
+    simple_mongo()
