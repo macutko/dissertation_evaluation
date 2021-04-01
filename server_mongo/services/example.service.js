@@ -14,15 +14,14 @@ async function create(request) {
 	 * Create a object from a request passsed by controller and return the time with the object.
 	 * return: @type {object, number}
 	 */
-	let t0 = performance.now()
 
 	if (!request.GUID) throw 'No GUID'
 	if (!request.subject) throw 'No subject'
 	if (!request.grade) throw 'No grade'
 
-
-	let user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
-	if (user) return {user: null, time: t1 - t0}
+    let t0 = performance.now()
+    let user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
+    if (user) return {user: null, time: t1 - t0}
 
 	const subject = new Subject({subjectName: request.subject, grade: request.grade})
 	await subject.save()
@@ -41,13 +40,12 @@ async function update(request) {
 	 * Update a record and return the time it took
 	 * return: @type {object, number}
 	 */
-	let t0 = performance.now()
-	if (!request.GUID) throw 'No GUID'
-	if (!request.subject) throw 'No subject'
-	if (!request.grade) throw 'No grade'
-
-	const user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
-	if (!user) throw 'User not found'
+    if (!request.GUID) throw 'No GUID'
+    if (!request.subject) throw 'No subject'
+    if (!request.grade) throw 'No grade'
+    let t0 = performance.now()
+    const user = await GUID.findOne({GUID: request.GUID}).populate({path: 'subjects'});
+    if (!user) throw 'User not found'
 
 	let found = false
 	for (const subject of user.subjects) {
@@ -78,12 +76,12 @@ async function get(req) {
 	 * Get the record aand return a list of all records that fit the query
 	 * @type {list,number}
 	 */
-	let t0 = performance.now()
-	console.log(req)
-	if (!req.GUID) throw 'need guid'
-	let u = await GUID.find({GUID: req.GUID}).populate({path: 'subjects'});
-	let t1 = performance.now()
-	return {u, time: t1 - t0}
+    console.log(req)
+    if (!req.GUID) throw 'need guid'
+    let t0 = performance.now()
+    let u = await GUID.find({GUID: req.GUID}).populate({path: 'subjects'});
+    let t1 = performance.now()
+    return {u, time: t1 - t0}
 }
 
 
